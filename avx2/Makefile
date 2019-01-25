@@ -8,7 +8,7 @@ SOURCES = sign.c polyvec.c packing.c poly.c reduce.s ntt.s invntt.s \
 HEADERS = api.h params.h sign.h polyvec.h packing.h poly.h reduce.h ntt.h \
   rounding.h fips202.h fips202x4.h
 
-all: PQCgenKAT_sign test/test_vectors test/test_dilithium
+all: PQCgenKAT_sign test/test_vectors test/test_dilithium test/mytest
 
 keccak4x/KeccakP-1600-times4-SIMD256.o: keccak4x/KeccakP-1600-times4-SIMD256.c \
   keccak4x/align.h keccak4x/brg_endian.h keccak4x/KeccakP-1600-times4-SnP.h \
@@ -22,6 +22,11 @@ test/test_vectors: test/test_vectors.c rng.c $(SOURCES) rng.h $(HEADERS)
 	$(CC) $(NISTFLAGS) $< rng.c $(SOURCES) -o $@ -lcrypto -ldl
 
 test/test_dilithium: test/test_dilithium.c randombytes.c test/cpucycles.c \
+  test/speed.c $(SOURCES) randombytes.h test/cpucycles.h test/speed.h $(HEADERS)
+	$(CC) $(CFLAGS) $< randombytes.c test/cpucycles.c test/speed.c \
+	  $(SOURCES) -o $@
+
+test/mytest: test/mytest.c randombytes.c test/cpucycles.c \
   test/speed.c $(SOURCES) randombytes.h test/cpucycles.h test/speed.h $(HEADERS)
 	$(CC) $(CFLAGS) $< randombytes.c test/cpucycles.c test/speed.c \
 	  $(SOURCES) -o $@
