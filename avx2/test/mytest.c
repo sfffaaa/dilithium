@@ -2,7 +2,6 @@
 #include <string.h>
 #include "cpucycles.h"
 #include "speed.h"
-#include "../randombytes.h"
 #include "../params.h"
 #include "../sign.h"
 
@@ -40,12 +39,11 @@ int main(void)
 	unsigned long long totalLength = 0;
 
 	snprintf((char*)m, MLEN, "%s", TEST_JSON_PLAINTEXT);
-	printf("test \n %s\n length: %lu", (char*)m, strlen((char*)m) + 1);
+	printf("Original String:\n%s\nlength: %lu\n", (char*)m, strlen((char*)m) + 1);
+	printf("\n");
 	timing_overhead = cpucycles_overhead();
 
 	for(i = 0; i < NTESTS; ++i) {
-		randombytes(m, MLEN);
-
 		// start to prepare to generate keypair
 		tkeygen[i] = cpucycles_start();
 		crypto_sign_keypair(pk, sk);
@@ -83,7 +81,7 @@ int main(void)
 	print_results("keygen:", tkeygen, NTESTS);
 	print_results("sign: ", tsign, NTESTS);
 	print_results("verify: ", tverify, NTESTS);
-	printf("average length: %f\n", ((double)totalLength / NTESTS));
+	printf("average length: %llu\n", (totalLength / NTESTS));
 
 
 	return 0;
