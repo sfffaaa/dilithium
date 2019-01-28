@@ -6,7 +6,7 @@
 #include "../sign.h"
 
 #define MLEN 500
-#define NTESTS 5000
+#define NTESTS 10
 
 
 #define TEST_JSON_PLAINTEXT "{\n" \

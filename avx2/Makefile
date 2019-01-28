@@ -45,3 +45,4 @@ clean:
 	rm -f test/test_vectors
 	rm -f test/test_dilithium
 	rm -f test/test_mul
+	rm -f test/mytest
